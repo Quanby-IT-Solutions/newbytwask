@@ -12,13 +12,13 @@ interface FormInputProps {
 
 const FormInput: React.FC<FormInputProps> = ({ label, type, id, value, onChange }) => (
   <div className="flex flex-col mt-4 w-full">
-    <label className="pb-2 text-lg font-medium text-gray-700" htmlFor={id}>{label}</label>
+    <label className="pb-2 text-lg font-medium text-black" htmlFor={id}>{label}</label>
     <input
       type={type}
       id={id}
       value={value}
       onChange={onChange}
-      className="w-full p-3 bg-white rounded-lg border border-gray-300 focus:outline-none focus:border-blue-400"
+      className="w-full p-3 bg-white text-black rounded-lg border border-black-300 focus:outline-none focus:border-blue-400"
       aria-label={label}
     />
   </div>

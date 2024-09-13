@@ -1,4 +1,4 @@
-"use client"; // Add this line at the top
+"use client";
 
 import React from 'react';
 import Header from './header';
@@ -18,6 +18,5 @@ const WelcomePage: React.FC = () => {
     </div>
   );
 };
-
 
 export default WelcomePage;

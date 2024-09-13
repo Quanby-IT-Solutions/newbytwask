@@ -52,14 +52,14 @@ const RegistrationForm: React.FC = () => {
           <button
             type="button"
             onClick={() => setUserType('freelancer')}
-            className={`px-6 py-3 text-lg font-semibold rounded-lg border border-solid min-w-[120px] ${userType === 'freelancer' ? 'text-white bg-blue-500' : 'text-black bg-white'}`}
+            className={`px-4 py-2 text-base sm:px-6 sm:py-3 sm:text-lg font-semibold rounded-lg border border-solid min-w-[100px] sm:min-w-[120px] ${userType === 'freelancer' ? 'text-white bg-blue-500' : 'text-black bg-white'}`}
           >
             (Freelancer) Tasker
           </button>
           <button
             type="button"
             onClick={() => setUserType('client')}
-            className={`px-6 py-3 text-lg font-semibold rounded-lg border border-solid min-w-[120px] ${userType === 'client' ? 'text-white bg-blue-500' : 'text-black bg-white'}`}
+            className={`px-4 py-2 text-base sm:px-6 sm:py-3 sm:text-lg font-semibold rounded-lg border border-solid min-w-[100px] sm:min-w-[120px] ${userType === 'client' ? 'text-white bg-blue-500' : 'text-black bg-white'}`}
           >
             Client
           </button>
@@ -72,7 +72,7 @@ const RegistrationForm: React.FC = () => {
       <FormInput label="Skills / Services offered" type="text" id="skills" value={formData.skills} onChange={handleInputChange} />
       <button
         type="submit"
-        className="mt-8 w-full text-xl font-semibold text-white rounded-lg bg-black py-3"
+        className="mt-8 w-full text-lg sm:text-xl font-semibold text-white rounded-lg bg-black py-3"
       >
         Pre-register
       </button>

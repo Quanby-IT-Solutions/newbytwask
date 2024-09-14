@@ -91,7 +91,7 @@ const WelcomeContent: React.FC = () => {
           >
             <motion.img
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/c832174ba4a196af8d531f43560c66ac8461df077a5c265e9615b50c6154ba2b?placeholderIfAbsent=true&apiKey=2e31fa6b2d0c458aaebf11d5898097ea"
-              className="w-full object-cover rounded-lg shadow-xl"
+              className="w-full object-cover rounded-lg"
               alt="Branding Logo"
               style={parallaxEffect}
             />

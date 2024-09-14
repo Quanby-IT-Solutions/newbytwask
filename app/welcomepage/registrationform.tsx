@@ -19,7 +19,7 @@ const FormInput: React.FC<FormInputProps> = ({ label, type, id, value, onChange,
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.3 }}
   >
-    <label className="pb-1 text-sm font-medium text-gray-700" htmlFor={id}>{label}</label>
+    <label className="pb-1 text-sm sm:text-base font-medium text-gray-700" htmlFor={id}>{label}</label>
     <div className="relative">
       <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
         {icon}
@@ -82,7 +82,7 @@ const SuccessPopup: React.FC<SuccessPopupProps> = ({ userType, onClose }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
       <motion.div 
-        className="bg-white rounded-lg p-8 max-w-md w-full mx-4 relative"
+        className="bg-white rounded-lg p-6 max-w-sm w-full mx-4 relative"
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -30 }}
@@ -96,26 +96,12 @@ const SuccessPopup: React.FC<SuccessPopupProps> = ({ userType, onClose }) => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
-        <motion.div 
-          className="text-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3, ease: "easeOut", delay: 0.2 }}
-        >
-          <motion.svg 
-            className="mx-auto h-12 w-12 text-green-500 mb-4" 
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24" 
-            xmlns="http://www.w3.org/2000/svg"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.4, ease: "easeOut", delay: 0.3 }}
-          >
+        <div className="text-center">
+          <svg className="mx-auto h-12 w-12 text-green-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </motion.svg>
-          <h3 className="text-2xl font-bold text-gray-900 mb-2">Pre-registration Successful!</h3>
-          <p className="text-lg text-gray-600 mb-4">
+          </svg>
+          <h3 className="text-xl font-bold text-gray-900 mb-2">Pre-registration Successful!</h3>
+          <p className="text-base text-gray-600 mb-4">
             Thank you for pre-registering as a {userType}!
           </p>
           <p className="text-sm text-gray-500 mb-6">
@@ -123,18 +109,17 @@ const SuccessPopup: React.FC<SuccessPopupProps> = ({ userType, onClose }) => {
               ? "We're excited to have you on board! Get ready to showcase your skills and find amazing projects."
               : "We're thrilled to have you join us! Get ready to connect with top talent and bring your projects to life."}
           </p>
-          <h4 className="text-lg font-semibold text-gray-800 mb-2">Next Steps:</h4>
           <ul className="text-sm text-gray-600 text-left list-disc list-inside mb-6">
             <li>Check your email for a confirmation link</li>
             <li>Complete your profile to stand out</li>
             <li>{userType === 'freelancer' ? 'Browse available projects' : 'Post your first job'}</li>
           </ul>
-        </motion.div>
+        </div>
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={onClose}
-          className="w-full bg-blue-600 text-white rounded-lg py-3 px-6 text-lg font-semibold hover:bg-blue-700 transition duration-300"
+          className="w-full bg-blue-600 text-white rounded-lg py-2 px-4 text-sm sm:text-base font-semibold hover:bg-blue-700 transition duration-300"
         >
           Got it, thanks!
         </motion.button>
@@ -178,7 +163,7 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.9 }}
         transition={{ duration: 0.3 }}
-        className="bg-white rounded-3xl shadow-lg w-full max-w-6xl relative overflow-hidden"
+        className="bg-white rounded-3xl shadow-lg w-full max-w-4xl relative overflow-hidden"
       >
         <button
           onClick={onClose}
@@ -191,17 +176,17 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
         <div className="flex flex-col lg:flex-row h-full">
           <motion.div 
-            className="w-full lg:w-1/2 p-8 bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex flex-col justify-between min-h-[600px]"
+            className="w-full lg:w-1/2 p-6 sm:p-8 bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex flex-col justify-between"
             initial={{ x: -50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
             <div>
-              <h2 className="text-4xl font-bold mb-8">Choose Your Path</h2>
-              <div className="space-y-6">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-6">Choose Your Path</h2>
+              <div className="space-y-4">
                 <motion.button
                   onClick={() => setUserType('freelancer')}
-                  className={`w-full py-3 px-6 rounded-lg text-lg font-semibold transition duration-300 ${
+                  className={`w-full py-2 sm:py-3 px-4 sm:px-6 rounded-lg text-base sm:text-lg font-semibold transition duration-300 ${
                     userType === 'freelancer'
                       ? 'bg-white text-blue-500 shadow-lg'
                       : 'border-2 border-white text-white hover:bg-white hover:text-blue-500'
@@ -213,7 +198,7 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 </motion.button>
                 <motion.button
                   onClick={() => setUserType('client')}
-                  className={`w-full py-3 px-6 rounded-lg text-lg font-semibold transition duration-300 ${
+                  className={`w-full py-2 sm:py-3 px-4 sm:px-6 rounded-lg text-base sm:text-lg font-semibold transition duration-300 ${
                     userType === 'client'
                       ? 'bg-white text-indigo-500 shadow-lg'
                       : 'border-2 border-white text-white hover:bg-white hover:text-indigo-500'
@@ -226,15 +211,15 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
               </div>
             </div>
             <motion.div 
-              className="mt-12"
+              className="mt-6 lg:mt-12"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.5 }}
             >
-              <h3 className="text-2xl font-semibold mb-4">
+              <h3 className="text-xl sm:text-2xl font-semibold mb-3">
                 {userType === 'freelancer' ? 'Freelancer Benefits' : 'Client Benefits'}
               </h3>
-              <ul className="space-y-2">
+              <ul className="space-y-2 text-sm sm:text-base">
                 {userType === 'freelancer' ? (
                   <>
                     <li className="flex items-center"><span className="mr-2">•</span>Showcase your skills</li>
@@ -253,7 +238,7 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           </motion.div>
 
           <motion.div 
-            className="w-full lg:w-1/2 p-8 flex items-center min-h-[600px] bg-gray-50"
+            className="w-full lg:w-1/2 p-6 sm:p-8 flex items-center bg-gray-50"
             initial={{ x: 50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -267,10 +252,10 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 transition={{ duration: 0.3 }}
                 className="w-full max-w-md mx-auto"
               >
-                <h3 className="text-3xl font-bold text-gray-800 mb-8 text-center">
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 text-center">
                   {userType === 'freelancer' ? 'Freelancer Registration' : 'Client Registration'}
                 </h3>
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <FormInput label="Full Name" type="text" id="fullname" value={formData.fullname} onChange={handleInputChange} icon={<UserIcon />} />
                   <FormInput label="Email Address" type="email" id="email" value={formData.email} onChange={handleInputChange} icon={<EmailIcon />} />
                   <FormInput label="Password" type="password" id="password" value={formData.password} onChange={handleInputChange} icon={<LockIcon />} />
@@ -282,7 +267,7 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   )}
                   <motion.button
                     type="submit"
-                    className="w-full bg-blue-600 text-white rounded-lg py-3 px-6 text-lg font-semibold hover:bg-blue-700 transition duration-300 mt-8"
+                    className="w-full bg-blue-600 text-white rounded-lg py-2 sm:py-3 px-4 sm:px-6 text-base sm:text-lg font-semibold hover:bg-blue-700 transition duration-300 mt-6"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >

@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
 import Lottie from "lottie-react";
 import backgroundAnimation from "../assets/animations/bg.json";
 import successAnimation from "../assets/animations/sc.json";
@@ -10,67 +9,19 @@ import step1Animation from "../assets/animations/intro.json";
 import step2Animation from "../assets/animations/service.json";
 import step3Animation from "../assets/animations/tasker.json";
 import step4Animation from "../assets/animations/build.json";
-
-interface FormInputProps {
-  label: string;
-  type: string;
-  id: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  icon?: React.ReactNode;
-}
-
-const FormInput: React.FC<FormInputProps> = ({
-  label,
-  type,
-  id,
-  value,
-  onChange,
-  icon,
-}) => (
-  <motion.div
-    className="flex flex-col mt-4 w-full"
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.3 }}
-  >
-    <label
-      className="pb-1 text-sm sm:text-base font-medium text-gray-700"
-      htmlFor={id}
-    >
-      {label}
-    </label>
-    <div className="relative">
-      {icon && (
-        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-          {icon}
-        </span>
-      )}
-      <input
-        type={type}
-        id={id}
-        value={value}
-        onChange={onChange}
-        className={`w-full p-3 ${
-          icon ? "pl-10" : ""
-        } text-sm bg-white text-gray-800 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300`}
-        aria-label={label}
-      />
-    </div>
-  </motion.div>
-);
+import FormInput from "./FormInput";
 
 const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [step, setStep] = useState<number>(1);
   const [formData, setFormData] = useState({
-    fullname: "",
-    email: "",
-    phone: "",
+    "entry.1041859775": "", // Full Name
+    "entry.2096901865": "", // Email Address
+    "entry.707219350": "", // Phone Number
     updates: true,
-    interestedServices: [] as string[],
-    platformImprovement: "",
-    becomeTasker: false,
-    betaTest: false,
+    "entry.2116844099": [] as string[], // Interested Services
+    "entry.281612395": "", // Platform Improvement
+    "entry.1288792702": false, // Become Tasker
+    "entry.715124632": false, // Beta Test
   });
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
@@ -84,12 +35,12 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
   const handleCheckboxChange = (option: string) => {
     setFormData((prevData) => {
-      const isSelected = prevData.interestedServices.includes(option);
+      const isSelected = prevData["entry.2116844099"].includes(option);
       return {
         ...prevData,
-        interestedServices: isSelected
-          ? prevData.interestedServices.filter((item) => item !== option)
-          : [...prevData.interestedServices, option],
+        "entry.2116844099": isSelected
+          ? prevData["entry.2116844099"].filter((item) => item !== option)
+          : [...prevData["entry.2116844099"], option],
       };
     });
   };
@@ -97,10 +48,31 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const handleNextStep = () => setStep((prevStep) => prevStep + 1);
   const handlePrevStep = () => setStep((prevStep) => Math.max(prevStep - 1, 1));
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    setShowSuccessPopup(true);
+
+    try {
+      const response = await fetch("/api/submit-form", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        if (result.success) {
+          setShowSuccessPopup(true);
+        } else {
+          console.error("Form submission failed:", result.message);
+        }
+      } else {
+        console.error("Form submission failed:", await response.text());
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
   const handleSuccessPopupClose = () => {
@@ -110,7 +82,6 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      {/* Background Animation: Plays Once */}
       <Lottie
         animationData={backgroundAnimation}
         loop={false}
@@ -163,30 +134,28 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   <h3 className="text-2xl font-bold text-gray-800 mb-6">
                     Step 1: Introduction and Basic Information
                   </h3>
-                  <p className="text-sm text-gray-600 mb-4">
-                    Join us at NearbyTask, where local help meets demand, from
-                    moving to handyman work! Fill out this form to get started
-                    on our platform debut.
-                  </p>
                   <FormInput
                     label="Full Name"
                     type="text"
-                    id="fullname"
-                    value={formData.fullname}
+                    id="entry.1041859775"
+                    name="entry.1041859775"
+                    value={formData["entry.1041859775"]}
                     onChange={handleInputChange}
                   />
                   <FormInput
                     label="Email Address"
                     type="email"
-                    id="email"
-                    value={formData.email}
+                    id="entry.2096901865"
+                    name="entry.2096901865"
+                    value={formData["entry.2096901865"]}
                     onChange={handleInputChange}
                   />
                   <FormInput
                     label="Phone Number (Optional)"
                     type="tel"
-                    id="phone"
-                    value={formData.phone}
+                    id="entry.707219350"
+                    name="entry.707219350"
+                    value={formData["entry.707219350"]}
                     onChange={handleInputChange}
                   />
                   <div className="flex items-center mt-4">
@@ -240,7 +209,7 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     <div key={option} className="flex items-center mb-2">
                       <input
                         type="checkbox"
-                        checked={formData.interestedServices.includes(option)}
+                        checked={formData["entry.2116844099"].includes(option)}
                         onChange={() => handleCheckboxChange(option)}
                         className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                       />
@@ -283,13 +252,13 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   <div className="flex items-center mt-4">
                     <input
                       type="checkbox"
-                      id="becomeTasker"
-                      checked={formData.becomeTasker}
+                      id="entry.1288792702"
+                      checked={formData["entry.1288792702"]}
                       onChange={handleInputChange}
                       className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                     />
                     <label
-                      htmlFor="becomeTasker"
+                      htmlFor="entry.1288792702"
                       className="ml-2 block text-sm text-gray-700"
                     >
                       Yes, I want to be a Tasker
@@ -325,20 +294,21 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   <FormInput
                     label="What would you like to see on this platform?"
                     type="text"
-                    id="platformImprovement"
-                    value={formData.platformImprovement}
+                    id="entry.281612395"
+                    name="entry.281612395"
+                    value={formData["entry.281612395"]}
                     onChange={handleInputChange}
                   />
                   <div className="flex items-center mt-4">
                     <input
                       type="checkbox"
-                      id="betaTest"
-                      checked={formData.betaTest}
+                      id="entry.715124632"
+                      checked={formData["entry.715124632"]}
                       onChange={handleInputChange}
                       className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                     />
                     <label
-                      htmlFor="betaTest"
+                      htmlFor="entry.715124632"
                       className="ml-2 block text-sm text-gray-700"
                     >
                       Would you like to be part of our beta testing?
@@ -365,6 +335,9 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         </div>
       </motion.div>
 
+      {/* Hidden iframe to prevent page reload on form submission */}
+      <iframe name="hidden_iframe" style={{ display: "none" }}></iframe>
+
       {/* Success Popup */}
       <AnimatePresence>
         {showSuccessPopup && (
@@ -376,7 +349,6 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
               exit={{ opacity: 0, y: -30 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
             >
-              {/* Close Button */}
               <button
                 onClick={handleSuccessPopupClose}
                 className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 focus:outline-none"
@@ -397,7 +369,6 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 </svg>
               </button>
 
-              {/* Success Content */}
               <div className="text-center">
                 <Lottie
                   animationData={successAnimation}
@@ -417,8 +388,6 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   <li>Complete your profile to stand out.</li>
                   <li>Follow us on social media for more updates.</li>
                 </ul>
-
-                {/* Facebook Follow Call to Action */}
                 <div className="bg-blue-50 p-4 rounded-lg shadow-inner mb-6">
                   <h4 className="text-lg font-semibold text-blue-800 mb-2">
                     Stay Connected with Us!
@@ -436,8 +405,6 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     Follow Quanby Solutions Inc. on Facebook
                   </a>
                 </div>
-
-                {/* Close Button */}
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -456,3 +423,23 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 };
 
 export default RegistrationForm;
+
+/**
+ * MAR-note: This is for the google form reference:
+ *
+ * --> from viewform form to formResponse: https://docs.google.com/forms/d/e/1FAIpQLSdZRR7wg1FmZJMWb-b8rua2HTo38PyM8kbelSUBydDy6v3rfQ/formResponse?usp=pp_url&entry.2096901865=test&entry.1041859775=email@test.com&entry.707219350=numbertest&entry.2116844099=Personal+Assistance&entry.2116844099=Furniture+Assembly&entry.2116844099=Moving&entry.2116844099=Delivery&entry.2116844099=Handyman+Work&entry.2116844099=Other&entry.1288792702=Yes&entry.281612395=What+would+you+like+to+see+on+this+platform+-+Answer&entry.715124632=Yes
+ *
+ * ids with sample data:
+ *  entry.2096901865=test
+ *  entry.1041859775=email@test.com
+ *  entry.707219350=numbertest
+ *  entry.2116844099=Personal+Assistance
+ *  entry.2116844099=Furniture+Assembly
+ *  entry.2116844099=Moving&entry.2116844099=Delivery
+ *  entry.2116844099=Handyman+Work
+ *  entry.2116844099=Other
+ *  entry.1288792702=Yes&
+ *  entry.281612395=What+would+you+like+to+see+on+this+platform+-+Answer
+ * entry.715124632=Yes
+ *
+ */

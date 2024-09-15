@@ -21,10 +21,6 @@ body {
 }
 
 @layer utilities {
-  * {
-    user-select: none;
-  }
-
   .text-balance {
     text-wrap: balance;
   }

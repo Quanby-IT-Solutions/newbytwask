@@ -38,7 +38,7 @@ const FormInput: React.FC<FormInputProps> = ({ label, type, id, value, onChange,
         id={id}
         value={value}
         onChange={onChange}
-        className={`w-full p-2 ${icon ? 'pl-10' : ''} text-sm bg-white text-black rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300`}
+        className={`w-full p-3 ${icon ? 'pl-10' : ''} text-sm bg-white text-gray-800 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300`}
         aria-label={label}
       />
     </div>
@@ -103,7 +103,7 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.9 }}
         transition={{ duration: 0.3 }}
-        className="bg-white rounded-3xl shadow-lg w-full max-w-4xl relative overflow-hidden"
+        className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl relative overflow-hidden"
       >
         <button
           onClick={onClose}
@@ -127,7 +127,7 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 <div>
                   <Lottie animationData={step1Animation} loop={true} className="mx-auto h-36 w-36 mb-6" />
                   <h3 className="text-2xl font-bold text-gray-800 mb-6">Step 1: Introduction and Basic Information</h3>
-                  <p className="text-sm text-gray-600 mb-4">Join us at [Platform Name], where local help meets demand, from moving to handyman work! Fill out this form to get started on our platform debut.</p>
+                  <p className="text-sm text-gray-600 mb-4">Join us at NearbyTask, where local help meets demand, from moving to handyman work! Fill out this form to get started on our platform debut.</p>
                   <FormInput label="Full Name" type="text" id="fullname" value={formData.fullname} onChange={handleInputChange} />
                   <FormInput label="Email Address" type="email" id="email" value={formData.email} onChange={handleInputChange} />
                   <FormInput label="Phone Number (Optional)" type="tel" id="phone" value={formData.phone} onChange={handleInputChange} />

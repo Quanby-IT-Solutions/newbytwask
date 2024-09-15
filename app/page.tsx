@@ -1,5 +1,6 @@
-import React from 'react';
-import WelcomePage from './welcomepage/welcomepage';
+import React from "react";
+import WelcomePage from "./welcome/page";
+
 export default function Home() {
   return <WelcomePage />;
 }

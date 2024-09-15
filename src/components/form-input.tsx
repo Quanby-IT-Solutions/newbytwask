@@ -41,7 +41,7 @@ const FormInput: React.FC<FormInputProps> = ({
       <input
         type={type}
         id={id}
-        name={name} // Added to match entry names
+        name={name}
         value={value}
         onChange={onChange}
         className={`w-full p-3 ${

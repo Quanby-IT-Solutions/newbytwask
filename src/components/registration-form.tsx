@@ -1,29 +1,38 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Lottie from "lottie-react";
+import FormInput from "./form-input";
+
 import backgroundAnimation from "../assets/animations/bg.json";
 import successAnimation from "../assets/animations/sc.json";
 import step1Animation from "../assets/animations/intro.json";
 import step2Animation from "../assets/animations/service.json";
 import step3Animation from "../assets/animations/tasker.json";
 import step4Animation from "../assets/animations/build.json";
-import FormInput from "./FormInput";
 
 const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [step, setStep] = useState<number>(1);
   const [formData, setFormData] = useState({
-    "entry.1041859775": "", // Full Name
-    "entry.2096901865": "", // Email Address
-    "entry.707219350": "", // Phone Number
+    // Full Name
+    "entry.1041859775": "",
+    // Email Address
+    "entry.2096901865": "",
+    // Phone Number
+    "entry.707219350": "",
     updates: true,
-    "entry.2116844099": [] as string[], // Interested Services
-    "entry.281612395": "", // Platform Improvement
-    "entry.1288792702": false, // Become Tasker
-    "entry.715124632": false, // Beta Test
+    // Interested Services
+    "entry.2116844099": [] as string[],
+    // Platform Improvement
+    "entry.281612395": "",
+    // Become Tasker
+    "entry.1288792702": false,
+    // Beta Test
+    "entry.715124632": false,
   });
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value, type, checked } = e.target;
@@ -50,6 +59,7 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
       const response = await fetch("/api/submit-form", {
@@ -72,6 +82,8 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       }
     } catch (error) {
       console.error("Error submitting form:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -176,9 +188,12 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   <motion.button
                     type="button"
                     onClick={handleNextStep}
-                    className="w-full bg-blue-600 text-white rounded-lg py-2 px-4 text-base font-semibold hover:bg-blue-700 transition duration-300 mt-6"
+                    disabled={isLoading}
+                    className={`w-full ${
+                      isLoading ? "bg-blue-300" : "bg-blue-600"
+                    } text-white rounded-lg py-2 px-4 text-base font-semibold hover:bg-blue-700 transition duration-300 mt-6`}
                   >
-                    Next
+                    {isLoading ? "Loading..." : "Next"}
                   </motion.button>
                 </div>
               )}
@@ -221,14 +236,20 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   <motion.button
                     type="button"
                     onClick={handleNextStep}
-                    className="w-full bg-blue-600 text-white rounded-lg py-2 px-4 text-base font-semibold hover:bg-blue-700 transition duration-300 mt-6"
+                    disabled={isLoading}
+                    className={`w-full ${
+                      isLoading ? "bg-blue-300" : "bg-blue-600"
+                    } text-white rounded-lg py-2 px-4 text-base font-semibold hover:bg-blue-700 transition duration-300 mt-6`}
                   >
-                    Next
+                    {isLoading ? "Loading..." : "Next"}
                   </motion.button>
                   <motion.button
                     type="button"
                     onClick={handlePrevStep}
-                    className="w-full bg-gray-300 text-gray-800 rounded-lg py-2 px-4 text-base font-semibold hover:bg-gray-400 transition duration-300 mt-2"
+                    disabled={isLoading}
+                    className={`w-full ${
+                      isLoading ? "bg-gray-200" : "bg-gray-300"
+                    } text-gray-800 rounded-lg py-2 px-4 text-base font-semibold hover:bg-gray-400 transition duration-300 mt-2`}
                   >
                     Back
                   </motion.button>
@@ -267,14 +288,20 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   <motion.button
                     type="button"
                     onClick={handleNextStep}
-                    className="w-full bg-blue-600 text-white rounded-lg py-2 px-4 text-base font-semibold hover:bg-blue-700 transition duration-300 mt-6"
+                    disabled={isLoading}
+                    className={`w-full ${
+                      isLoading ? "bg-blue-300" : "bg-blue-600"
+                    } text-white rounded-lg py-2 px-4 text-base font-semibold hover:bg-blue-700 transition duration-300 mt-6`}
                   >
-                    Next
+                    {isLoading ? "Loading..." : "Next"}
                   </motion.button>
                   <motion.button
                     type="button"
                     onClick={handlePrevStep}
-                    className="w-full bg-gray-300 text-gray-800 rounded-lg py-2 px-4 text-base font-semibold hover:bg-gray-400 transition duration-300 mt-2"
+                    disabled={isLoading}
+                    className={`w-full ${
+                      isLoading ? "bg-gray-200" : "bg-gray-300"
+                    } text-gray-800 rounded-lg py-2 px-4 text-base font-semibold hover:bg-gray-400 transition duration-300 mt-2`}
                   >
                     Back
                   </motion.button>
@@ -317,14 +344,20 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   <motion.button
                     type="button"
                     onClick={handleSubmit}
-                    className="w-full bg-blue-600 text-white rounded-lg py-2 px-4 text-base font-semibold hover:bg-blue-700 transition duration-300 mt-6"
+                    disabled={isLoading}
+                    className={`w-full ${
+                      isLoading ? "bg-blue-300" : "bg-blue-600"
+                    } text-white rounded-lg py-2 px-4 text-base font-semibold hover:bg-blue-700 transition duration-300 mt-6`}
                   >
-                    Submit
+                    {isLoading ? "Submitting..." : "Submit"}
                   </motion.button>
                   <motion.button
                     type="button"
                     onClick={handlePrevStep}
-                    className="w-full bg-gray-300 text-gray-800 rounded-lg py-2 px-4 text-base font-semibold hover:bg-gray-400 transition duration-300 mt-2"
+                    disabled={isLoading}
+                    className={`w-full ${
+                      isLoading ? "bg-gray-200" : "bg-gray-300"
+                    } text-gray-800 rounded-lg py-2 px-4 text-base font-semibold hover:bg-gray-400 transition duration-300 mt-2`}
                   >
                     Back
                   </motion.button>
@@ -423,23 +456,3 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 };
 
 export default RegistrationForm;
-
-/**
- * MAR-note: This is for the google form reference:
- *
- * --> from viewform form to formResponse: https://docs.google.com/forms/d/e/1FAIpQLSdZRR7wg1FmZJMWb-b8rua2HTo38PyM8kbelSUBydDy6v3rfQ/formResponse?usp=pp_url&entry.2096901865=test&entry.1041859775=email@test.com&entry.707219350=numbertest&entry.2116844099=Personal+Assistance&entry.2116844099=Furniture+Assembly&entry.2116844099=Moving&entry.2116844099=Delivery&entry.2116844099=Handyman+Work&entry.2116844099=Other&entry.1288792702=Yes&entry.281612395=What+would+you+like+to+see+on+this+platform+-+Answer&entry.715124632=Yes
- *
- * ids with sample data:
- *  entry.2096901865=test
- *  entry.1041859775=email@test.com
- *  entry.707219350=numbertest
- *  entry.2116844099=Personal+Assistance
- *  entry.2116844099=Furniture+Assembly
- *  entry.2116844099=Moving&entry.2116844099=Delivery
- *  entry.2116844099=Handyman+Work
- *  entry.2116844099=Other
- *  entry.1288792702=Yes&
- *  entry.281612395=What+would+you+like+to+see+on+this+platform+-+Answer
- * entry.715124632=Yes
- *
- */

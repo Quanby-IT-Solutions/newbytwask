@@ -2,6 +2,13 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Lottie from 'lottie-react';
+import backgroundAnimation from '../animations/bg.json'; // Background animation file
+import successAnimation from '../animations/sc.json'; // Success animation file
+import step1Animation from '../animations/intro.json'; // Animation for Step 1
+import step2Animation from '../animations/service.json'; // Animation for Step 2
+import step3Animation from '../animations/tasker.json'; // Animation for Step 3
+import step4Animation from '../animations/build.json'; // Animation for Step 4
 
 interface FormInputProps {
   label: string;
@@ -9,11 +16,11 @@ interface FormInputProps {
   id: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
 }
 
 const FormInput: React.FC<FormInputProps> = ({ label, type, id, value, onChange, icon }) => (
-  <motion.div 
+  <motion.div
     className="flex flex-col mt-4 w-full"
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
@@ -21,133 +28,63 @@ const FormInput: React.FC<FormInputProps> = ({ label, type, id, value, onChange,
   >
     <label className="pb-1 text-sm sm:text-base font-medium text-gray-700" htmlFor={id}>{label}</label>
     <div className="relative">
-      <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-        {icon}
-      </span>
+      {icon && (
+        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+          {icon}
+        </span>
+      )}
       <input
         type={type}
         id={id}
         value={value}
         onChange={onChange}
-        className="w-full p-2 pl-10 text-sm bg-white text-black rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+        className={`w-full p-2 ${icon ? 'pl-10' : ''} text-sm bg-white text-black rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300`}
         aria-label={label}
       />
     </div>
   </motion.div>
 );
 
-const UserIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-  </svg>
-);
-
-const EmailIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-  </svg>
-);
-
-const LockIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-  </svg>
-);
-
-const LocationIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-  </svg>
-);
-
-const SkillsIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-  </svg>
-);
-
-const JobIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-  </svg>
-);
-
-interface SuccessPopupProps {
-  userType: 'freelancer' | 'client';
-  onClose: () => void;
-}
-
-const SuccessPopup: React.FC<SuccessPopupProps> = ({ userType, onClose }) => {
-  return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-      <motion.div 
-        className="bg-white rounded-lg p-6 max-w-sm w-full mx-4 relative"
-        initial={{ opacity: 0, y: -30 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -30 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-      >
-        <button
-          onClick={onClose}
-          className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 focus:outline-none"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-        <div className="text-center">
-          <svg className="mx-auto h-12 w-12 text-green-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <h3 className="text-xl font-bold text-gray-900 mb-2">Pre-registration Successful!</h3>
-          <p className="text-base text-gray-600 mb-4">
-            Thank you for pre-registering as a {userType}!
-          </p>
-          <p className="text-sm text-gray-500 mb-6">
-            {userType === 'freelancer'
-              ? "We're excited to have you on board! Get ready to showcase your skills and find amazing projects."
-              : "We're thrilled to have you join us! Get ready to connect with top talent and bring your projects to life."}
-          </p>
-          <ul className="text-sm text-gray-600 text-left list-disc list-inside mb-6">
-            <li>Check your email for a confirmation link</li>
-            <li>Complete your profile to stand out</li>
-            <li>{userType === 'freelancer' ? 'Browse available projects' : 'Post your first job'}</li>
-          </ul>
-        </div>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={onClose}
-          className="w-full bg-blue-600 text-white rounded-lg py-2 px-4 text-sm sm:text-base font-semibold hover:bg-blue-700 transition duration-300"
-        >
-          Got it, thanks!
-        </motion.button>
-      </motion.div>
-    </div>
-  );
-};
-
 const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-  const [userType, setUserType] = useState<'freelancer' | 'client'>('freelancer');
+  const [step, setStep] = useState<number>(1);
   const [formData, setFormData] = useState({
     fullname: '',
     email: '',
-    password: '',
-    location: '',
-    skills: '',
-    interestedJob: '',
+    phone: '',
+    updates: true,
+    interestedServices: [] as string[],
+    platformImprovement: '',
+    becomeTasker: false,
+    betaTest: false,
   });
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    setFormData(prevData => ({ ...prevData, [id]: value }));
+    const { id, value, type, checked } = e.target;
+    setFormData(prevData => ({
+      ...prevData,
+      [id]: type === 'checkbox' ? checked : value
+    }));
   };
 
+  const handleCheckboxChange = (option: string) => {
+    setFormData(prevData => {
+      const isSelected = prevData.interestedServices.includes(option);
+      return {
+        ...prevData,
+        interestedServices: isSelected
+          ? prevData.interestedServices.filter(item => item !== option)
+          : [...prevData.interestedServices, option],
+      };
+    });
+  };
+
+  const handleNextStep = () => setStep(prevStep => prevStep + 1);
+  const handlePrevStep = () => setStep(prevStep => Math.max(prevStep - 1, 1));
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', { userType, ...formData });
+    console.log('Form submitted:', formData);
     setShowSuccessPopup(true);
   };
 
@@ -158,6 +95,9 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      {/* Background Animation: Plays Once */}
+      <Lottie animationData={backgroundAnimation} loop={false} className="absolute inset-0 w-full h-full object-cover" />
+
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -174,115 +114,212 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           </svg>
         </button>
 
-        <div className="flex flex-col lg:flex-row h-full">
-          <motion.div 
-            className="w-full lg:w-1/2 p-6 sm:p-8 bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex flex-col justify-between"
-            initial={{ x: -50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <div>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-6">Choose Your Path</h2>
-              <div className="space-y-4">
-                <motion.button
-                  onClick={() => setUserType('freelancer')}
-                  className={`w-full py-2 sm:py-3 px-4 sm:px-6 rounded-lg text-base sm:text-lg font-semibold transition duration-300 ${
-                    userType === 'freelancer'
-                      ? 'bg-white text-blue-500 shadow-lg'
-                      : 'border-2 border-white text-white hover:bg-white hover:text-blue-500'
-                  }`}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  I'm a Freelancer
-                </motion.button>
-                <motion.button
-                  onClick={() => setUserType('client')}
-                  className={`w-full py-2 sm:py-3 px-4 sm:px-6 rounded-lg text-base sm:text-lg font-semibold transition duration-300 ${
-                    userType === 'client'
-                      ? 'bg-white text-indigo-500 shadow-lg'
-                      : 'border-2 border-white text-white hover:bg-white hover:text-indigo-500'
-                  }`}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  I'm a Client
-                </motion.button>
-              </div>
-            </div>
-            <motion.div 
-              className="mt-6 lg:mt-12"
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
+        <div className="p-8">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={step}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
             >
-              <h3 className="text-xl sm:text-2xl font-semibold mb-3">
-                {userType === 'freelancer' ? 'Freelancer Benefits' : 'Client Benefits'}
-              </h3>
-              <ul className="space-y-2 text-sm sm:text-base">
-                {userType === 'freelancer' ? (
-                  <>
-                    <li className="flex items-center"><span className="mr-2">•</span>Showcase your skills</li>
-                    <li className="flex items-center"><span className="mr-2">•</span>Find exciting projects</li>
-                    <li className="flex items-center"><span className="mr-2">•</span>Build your portfolio</li>
-                  </>
-                ) : (
-                  <>
-                    <li className="flex items-center"><span className="mr-2">•</span>Access top talent</li>
-                    <li className="flex items-center"><span className="mr-2">•</span>Post projects easily</li>
-                    <li className="flex items-center"><span className="mr-2">•</span>Get work done efficiently</li>
-                  </>
-                )}
-              </ul>
-            </motion.div>
-          </motion.div>
-
-          <motion.div 
-            className="w-full lg:w-1/2 p-6 sm:p-8 flex items-center bg-gray-50"
-            initial={{ x: 50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={userType}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-                className="w-full max-w-md mx-auto"
-              >
-                <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 text-center">
-                  {userType === 'freelancer' ? 'Freelancer Registration' : 'Client Registration'}
-                </h3>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <FormInput label="Full Name" type="text" id="fullname" value={formData.fullname} onChange={handleInputChange} icon={<UserIcon />} />
-                  <FormInput label="Email Address" type="email" id="email" value={formData.email} onChange={handleInputChange} icon={<EmailIcon />} />
-                  <FormInput label="Password" type="password" id="password" value={formData.password} onChange={handleInputChange} icon={<LockIcon />} />
-                  <FormInput label="Location" type="text" id="location" value={formData.location} onChange={handleInputChange} icon={<LocationIcon />} />
-                  {userType === 'freelancer' ? (
-                    <FormInput label="Skills" type="text" id="skills" value={formData.skills} onChange={handleInputChange} icon={<SkillsIcon />} />
-                  ) : (
-                    <FormInput label="Interested Job to Post" type="text" id="interestedJob" value={formData.interestedJob} onChange={handleInputChange} icon={<JobIcon />} />
-                  )}
+              {step === 1 && (
+                <div>
+                  <Lottie animationData={step1Animation} loop={true} className="mx-auto h-36 w-36 mb-6" />
+                  <h3 className="text-2xl font-bold text-gray-800 mb-6">Step 1: Introduction and Basic Information</h3>
+                  <p className="text-sm text-gray-600 mb-4">Join us at [Platform Name], where local help meets demand, from moving to handyman work! Fill out this form to get started on our platform debut.</p>
+                  <FormInput label="Full Name" type="text" id="fullname" value={formData.fullname} onChange={handleInputChange} />
+                  <FormInput label="Email Address" type="email" id="email" value={formData.email} onChange={handleInputChange} />
+                  <FormInput label="Phone Number (Optional)" type="tel" id="phone" value={formData.phone} onChange={handleInputChange} />
+                  <div className="flex items-center mt-4">
+                    <input
+                      type="checkbox"
+                      id="updates"
+                      checked={formData.updates}
+                      onChange={handleInputChange}
+                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    />
+                    <label htmlFor="updates" className="ml-2 block text-sm text-gray-700">
+                      I want to receive updates about the launch!
+                    </label>
+                  </div>
                   <motion.button
-                    type="submit"
-                    className="w-full bg-blue-600 text-white rounded-lg py-2 sm:py-3 px-4 sm:px-6 text-base sm:text-lg font-semibold hover:bg-blue-700 transition duration-300 mt-6"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    type="button"
+                    onClick={handleNextStep}
+                    className="w-full bg-blue-600 text-white rounded-lg py-2 px-4 text-base font-semibold hover:bg-blue-700 transition duration-300 mt-6"
                   >
-                    Pre-register as {userType === 'freelancer' ? 'Freelancer' : 'Client'}
+                    Next
                   </motion.button>
-                </form>
-              </motion.div>
-            </AnimatePresence>
-          </motion.div>
+                </div>
+              )}
+
+              {step === 2 && (
+                <div>
+                  <Lottie animationData={step2Animation} loop={true} className="mx-auto h-36 w-36 mb-6" />
+                  <h3 className="text-2xl font-bold text-gray-800 mb-6">Step 2: What Services Are You Interested In?</h3>
+                  <p className="text-sm text-gray-600 mb-4">Please select all the services you are interested in. This helps us understand the demand and offerings on the platform.</p>
+                  {['Personal Assistance', 'Furniture Assembly', 'Moving', 'Delivery', 'Handyman Work', 'Other'].map(option => (
+                    <div key={option} className="flex items-center mb-2">
+                      <input
+                        type="checkbox"
+                        checked={formData.interestedServices.includes(option)}
+                        onChange={() => handleCheckboxChange(option)}
+                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      />
+                      <label className="ml-2 block text-sm text-gray-700">{option}</label>
+                    </div>
+                  ))}
+                  <motion.button
+                    type="button"
+                    onClick={handleNextStep}
+                    className="w-full bg-blue-600 text-white rounded-lg py-2 px-4 text-base font-semibold hover:bg-blue-700 transition duration-300 mt-6"
+                  >
+                    Next
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    onClick={handlePrevStep}
+                    className="w-full bg-gray-300 text-gray-800 rounded-lg py-2 px-4 text-base font-semibold hover:bg-gray-400 transition duration-300 mt-2"
+                  >
+                    Back
+                  </motion.button>
+                </div>
+              )}
+
+              {step === 3 && (
+                <div>
+                  <Lottie animationData={step3Animation} loop={true} className="mx-auto h-36 w-36 mb-6" />
+                  <h3 className="text-2xl font-bold text-gray-800 mb-6">Step 3: Would You Like to Be a Tasker?</h3>
+                  <p className="text-sm text-gray-600 mb-4">Taskers offer their skills and services on our platform. Are you interested in becoming one?</p>
+                  <div className="flex items-center mt-4">
+                    <input
+                      type="checkbox"
+                      id="becomeTasker"
+                      checked={formData.becomeTasker}
+                      onChange={handleInputChange}
+                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    />
+                    <label htmlFor="becomeTasker" className="ml-2 block text-sm text-gray-700">
+                      Yes, I want to be a Tasker
+                    </label>
+                  </div>
+                  <motion.button
+                    type="button"
+                    onClick={handleNextStep}
+                    className="w-full bg-blue-600 text-white rounded-lg py-2 px-4 text-base font-semibold hover:bg-blue-700 transition duration-300 mt-6"
+                  >
+                    Next
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    onClick={handlePrevStep}
+                    className="w-full bg-gray-300 text-gray-800 rounded-lg py-2 px-4 text-base font-semibold hover:bg-gray-400 transition duration-300 mt-2"
+                  >
+                    Back
+                  </motion.button>
+                </div>
+              )}
+
+              {step === 4 && (
+                <div>
+                  <Lottie animationData={step4Animation} loop={true} className="mx-auto h-36 w-36 mb-6" />
+                  <h3 className="text-2xl font-bold text-gray-800 mb-6">Step 4: Help Us Build the Platform</h3>
+                  <FormInput label="What would you like to see on this platform?" type="text" id="platformImprovement" value={formData.platformImprovement} onChange={handleInputChange} />
+                  <div className="flex items-center mt-4">
+                    <input
+                      type="checkbox"
+                      id="betaTest"
+                      checked={formData.betaTest}
+                      onChange={handleInputChange}
+                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    />
+                    <label htmlFor="betaTest" className="ml-2 block text-sm text-gray-700">
+                      Would you like to be part of our beta testing?
+                    </label>
+                  </div>
+                  <motion.button
+                    type="button"
+                    onClick={handleSubmit}
+                    className="w-full bg-blue-600 text-white rounded-lg py-2 px-4 text-base font-semibold hover:bg-blue-700 transition duration-300 mt-6"
+                  >
+                    Submit
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    onClick={handlePrevStep}
+                    className="w-full bg-gray-300 text-gray-800 rounded-lg py-2 px-4 text-base font-semibold hover:bg-gray-400 transition duration-300 mt-2"
+                  >
+                    Back
+                  </motion.button>
+                </div>
+              )}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </motion.div>
 
+      {/* Success Popup */}
       <AnimatePresence>
         {showSuccessPopup && (
-          <SuccessPopup userType={userType} onClose={handleSuccessPopupClose} />
+          <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-60 backdrop-blur-md">
+            <motion.div
+              className="bg-white rounded-2xl p-8 max-w-md w-full mx-4 relative shadow-lg"
+              initial={{ opacity: 0, y: -30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -30 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            >
+              {/* Close Button */}
+              <button
+                onClick={handleSuccessPopupClose}
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 focus:outline-none"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+
+              {/* Success Content */}
+              <div className="text-center">
+                <Lottie animationData={successAnimation} loop={false} className="mx-auto h-36 w-36 mb-6" />
+                <h3 className="text-2xl font-bold text-gray-800 mb-3">Success!</h3>
+                <p className="text-base text-gray-700 mb-4">
+                  Thank you for pre-registering! You’ll be the first to know when we go live. Stay tuned for more updates and exclusive offers!
+                </p>
+                <ul className="text-sm text-gray-600 text-left list-disc list-inside mb-6 space-y-2">
+                  <li>Check your email for a confirmation link.</li>
+                  <li>Complete your profile to stand out.</li>
+                  <li>Follow us on social media for more updates.</li>
+                </ul>
+
+                {/* Facebook Follow Call to Action */}
+                <div className="bg-blue-50 p-4 rounded-lg shadow-inner mb-6">
+                  <h4 className="text-lg font-semibold text-blue-800 mb-2">Stay Connected with Us!</h4>
+                  <p className="text-sm text-blue-700 mb-4">
+                    Follow our Facebook page for the latest news, offers, and updates.
+                  </p>
+                  <a
+                    href="https://www.facebook.com/quanbysolutionsinc"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block bg-blue-600 text-white rounded-full py-2 px-6 text-sm font-semibold hover:bg-blue-700 transition duration-300"
+                  >
+                    Follow Quanby Solutions Inc. on Facebook
+                  </a>
+                </div>
+
+                {/* Close Button */}
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleSuccessPopupClose}
+                  className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-full py-3 px-6 text-base font-semibold hover:from-blue-600 hover:to-indigo-600 transition duration-300 shadow-md"
+                >
+                  Got it, thanks!
+                </motion.button>
+              </div>
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </div>

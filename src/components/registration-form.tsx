@@ -36,11 +36,19 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value, type, checked } = e.target;
+
+    // Validate and handle phone number input
+    if (id === "entry.707219350" && isNaN(Number(value))) {
+      // Prevent non-numeric input for the phone number
+      return;
+    }
+
     setFormData((prevData) => ({
       ...prevData,
       [id]: type === "checkbox" ? checked : value,
     }));
   };
+
 
   const handleCheckboxChange = (option: string) => {
     setFormData((prevData) => {
@@ -54,7 +62,39 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     });
   };
 
-  const handleNextStep = () => setStep((prevStep) => prevStep + 1);
+  const handleNextStep = () => {
+    if (step === 1) {
+      // Validation for Step 1: Check if Full Name, Email, and Phone Number are filled
+      const { "entry.1041859775": fullName, "entry.2096901865": email, "entry.707219350": phoneNumber } = formData;
+
+      if (!fullName.trim()) {
+        alert("Please enter your full name.");
+        return;
+      }
+
+      if (!email.trim()) {
+        alert("Please enter a valid email address.");
+        return;
+      }
+
+      if (!phoneNumber.trim() || isNaN(Number(phoneNumber))) {
+        alert("Please enter a valid phone number.");
+        return;
+      }
+    }
+
+    if (step === 2) {
+      // Validation for Step 2: Ensure that at least one service is selected
+      if (formData["entry.2116844099"].length === 0) {
+        alert("Please select at least one service.");
+        return;
+      }
+    }
+
+    // Move to the next step if validation passes
+    setStep((prevStep) => prevStep + 1);
+  };
+
   const handlePrevStep = () => setStep((prevStep) => Math.max(prevStep - 1, 1));
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -153,6 +193,7 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     name="entry.1041859775"
                     value={formData["entry.1041859775"]}
                     onChange={handleInputChange}
+                    required
                   />
                   <FormInput
                     label="Email Address"
@@ -161,14 +202,16 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     name="entry.2096901865"
                     value={formData["entry.2096901865"]}
                     onChange={handleInputChange}
+                    required
                   />
                   <FormInput
-                    label="Phone Number (Optional)"
+                    label="Phone Number"
                     type="tel"
                     id="entry.707219350"
                     name="entry.707219350"
                     value={formData["entry.707219350"]}
                     onChange={handleInputChange}
+                    required
                   />
                   <div className="flex items-center mt-4">
                     <input
@@ -189,9 +232,7 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     type="button"
                     onClick={handleNextStep}
                     disabled={isLoading}
-                    className={`w-full ${
-                      isLoading ? "bg-blue-300" : "bg-blue-600"
-                    } text-white rounded-lg py-2 px-4 text-base font-semibold hover:bg-blue-700 transition duration-300 mt-6`}
+                    className={`w-full ${isLoading ? "bg-blue-300" : "bg-blue-600"} text-white rounded-lg py-2 px-4 text-base font-semibold hover:bg-blue-700 transition duration-300 mt-6`}
                   >
                     {isLoading ? "Loading..." : "Next"}
                   </motion.button>
@@ -237,9 +278,8 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     type="button"
                     onClick={handleNextStep}
                     disabled={isLoading}
-                    className={`w-full ${
-                      isLoading ? "bg-blue-300" : "bg-blue-600"
-                    } text-white rounded-lg py-2 px-4 text-base font-semibold hover:bg-blue-700 transition duration-300 mt-6`}
+                    className={`w-full ${isLoading ? "bg-blue-300" : "bg-blue-600"
+                      } text-white rounded-lg py-2 px-4 text-base font-semibold hover:bg-blue-700 transition duration-300 mt-6`}
                   >
                     {isLoading ? "Loading..." : "Next"}
                   </motion.button>
@@ -247,9 +287,8 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     type="button"
                     onClick={handlePrevStep}
                     disabled={isLoading}
-                    className={`w-full ${
-                      isLoading ? "bg-gray-200" : "bg-gray-300"
-                    } text-gray-800 rounded-lg py-2 px-4 text-base font-semibold hover:bg-gray-400 transition duration-300 mt-2`}
+                    className={`w-full ${isLoading ? "bg-gray-200" : "bg-gray-300"
+                      } text-gray-800 rounded-lg py-2 px-4 text-base font-semibold hover:bg-gray-400 transition duration-300 mt-2`}
                   >
                     Back
                   </motion.button>
@@ -289,9 +328,8 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     type="button"
                     onClick={handleNextStep}
                     disabled={isLoading}
-                    className={`w-full ${
-                      isLoading ? "bg-blue-300" : "bg-blue-600"
-                    } text-white rounded-lg py-2 px-4 text-base font-semibold hover:bg-blue-700 transition duration-300 mt-6`}
+                    className={`w-full ${isLoading ? "bg-blue-300" : "bg-blue-600"
+                      } text-white rounded-lg py-2 px-4 text-base font-semibold hover:bg-blue-700 transition duration-300 mt-6`}
                   >
                     {isLoading ? "Loading..." : "Next"}
                   </motion.button>
@@ -299,9 +337,8 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     type="button"
                     onClick={handlePrevStep}
                     disabled={isLoading}
-                    className={`w-full ${
-                      isLoading ? "bg-gray-200" : "bg-gray-300"
-                    } text-gray-800 rounded-lg py-2 px-4 text-base font-semibold hover:bg-gray-400 transition duration-300 mt-2`}
+                    className={`w-full ${isLoading ? "bg-gray-200" : "bg-gray-300"
+                      } text-gray-800 rounded-lg py-2 px-4 text-base font-semibold hover:bg-gray-400 transition duration-300 mt-2`}
                   >
                     Back
                   </motion.button>
@@ -345,9 +382,8 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     type="button"
                     onClick={handleSubmit}
                     disabled={isLoading}
-                    className={`w-full ${
-                      isLoading ? "bg-blue-300" : "bg-blue-600"
-                    } text-white rounded-lg py-2 px-4 text-base font-semibold hover:bg-blue-700 transition duration-300 mt-6`}
+                    className={`w-full ${isLoading ? "bg-blue-300" : "bg-blue-600"
+                      } text-white rounded-lg py-2 px-4 text-base font-semibold hover:bg-blue-700 transition duration-300 mt-6`}
                   >
                     {isLoading ? "Submitting..." : "Submit"}
                   </motion.button>
@@ -355,9 +391,8 @@ const RegistrationForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     type="button"
                     onClick={handlePrevStep}
                     disabled={isLoading}
-                    className={`w-full ${
-                      isLoading ? "bg-gray-200" : "bg-gray-300"
-                    } text-gray-800 rounded-lg py-2 px-4 text-base font-semibold hover:bg-gray-400 transition duration-300 mt-2`}
+                    className={`w-full ${isLoading ? "bg-gray-200" : "bg-gray-300"
+                      } text-gray-800 rounded-lg py-2 px-4 text-base font-semibold hover:bg-gray-400 transition duration-300 mt-2`}
                   >
                     Back
                   </motion.button>

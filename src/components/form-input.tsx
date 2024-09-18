@@ -9,6 +9,7 @@ interface FormInputProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   icon?: React.ReactNode;
+  required?: boolean;
 }
 
 const FormInput: React.FC<FormInputProps> = ({
@@ -19,6 +20,7 @@ const FormInput: React.FC<FormInputProps> = ({
   value,
   onChange,
   icon,
+  required = false,
 }) => (
   <motion.div
     className="flex flex-col mt-4 w-full"
@@ -44,9 +46,9 @@ const FormInput: React.FC<FormInputProps> = ({
         name={name}
         value={value}
         onChange={onChange}
-        className={`w-full p-3 ${
-          icon ? "pl-10" : ""
-        } text-sm bg-white text-gray-800 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300`}
+        required={required}
+        className={`w-full p-3 ${icon ? "pl-10" : ""
+          } text-sm bg-white text-gray-800 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300`}
         aria-label={label}
       />
     </div>
